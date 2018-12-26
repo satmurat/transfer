@@ -6,6 +6,7 @@ import com.ironbank.transfer.service.AccountService;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,7 +24,11 @@ public class AccountRestService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Account get(@PathParam("id") UUID id) {
-        return accountService.get(id);
+        Account account = accountService.get(id);
+        if (account == null) {
+            throw new NotFoundException();
+        }
+        return account;
     }
 
     @POST

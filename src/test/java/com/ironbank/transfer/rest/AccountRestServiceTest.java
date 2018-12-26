@@ -9,6 +9,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class AccountRestServiceTest extends BaseJerseyTest {
 
@@ -32,6 +33,15 @@ public class AccountRestServiceTest extends BaseJerseyTest {
         // ASSERT
         Assert.assertEquals(HttpStatus.OK_200, response.getStatus());
         Assert.assertNotNull(response.getEntity());
+    }
+
+    @Test
+    public void tryGetNotExistsAccountTest() {
+        // ACT
+        Response response = target("/accounts/" + UUID.randomUUID())
+                .request(MediaType.APPLICATION_JSON).get();
+        // ASSERT
+        Assert.assertEquals(HttpStatus.NOT_FOUND_404, response.getStatus());
     }
 
     private Response createAccount() {
